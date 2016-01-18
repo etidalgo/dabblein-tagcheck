@@ -12,6 +12,8 @@ namespace TagCheck
         }
         public ParseResult Check(string raw)
         {
+            // tokenize
+            // validate
             return new ParseResult(false);
         }
 
