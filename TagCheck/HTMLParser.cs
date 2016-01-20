@@ -4,9 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// TextReader Class (System.IO) <https://msdn.microsoft.com/en-us/library/system.io.textreader(v=vs.110).aspx>
+
+
 namespace TagCheck
 {
-    class HTMLParser
+    public class TagElement
+    {
+        public int TagType { get; private set; }
+
+        public TagElement()
+        {
+
+        }
+
+        public static TagElement Parse( TextReader tr)
+        {
+
+        }
+    }
+    public class HTMLParser
     {
         public HTMLParser() { 
         }
@@ -21,5 +38,7 @@ namespace TagCheck
         {
 
         }
+
+
     }
 }
