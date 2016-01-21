@@ -27,7 +27,6 @@ namespace TagCheckLibrary
             TagName = tagName;
             TagText = tagText;
         }
-
     }
 
     public class TagElementParser

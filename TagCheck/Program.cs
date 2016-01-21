@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TagCheckLibrary;
 
+// Todo: 
+// Get NUnit working
+// Clean up TagElement.
+// 
 namespace TagCheck
 {
     class Program
