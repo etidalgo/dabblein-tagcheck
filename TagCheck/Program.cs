@@ -10,14 +10,25 @@ namespace TagCheck
     {
         static void Main(string[] args)
         {
-            var text = "<html><head></head><body></body></html>";
-            var badly = "<b><i>Some text</b></i>";
+
+            string[] testCases = {
+                    "<html><head></head><body></body></html>", 
+                    "<b><i>Some text properly nested</i></b>",
+                    "<b><i>Some text <image src=\"blahblahblah\" />properly nested with single tag</i></b>",
+                    "<b><i>Some text properly nested with single tag</i><image src=\"blahblahblah\" /></b>",
+                    "<b><i>Some text badly nested</b></i>",
+                    "<b><i>Some text Missing closing</i>", 
+                    "<i>Some text Missing Opening</b></i>",
+                    "<i>Some text Missing Opening</i></b>"
+            };
 
             HTMLParser parser = new HTMLParser();
-            ParseResult result = parser.Check(text);
-            Console.WriteLine("Result: {0} ", result.IsValid);
-            result = parser.Check(badly);
-            Console.WriteLine("Result: {0}", result.IsValid);
+            ParseResult result;
+            foreach (var testCase in testCases)
+            {
+                result = parser.Check(testCase);
+                Console.WriteLine("Result: {0} {1}\r\n {2}", result.IsValid, result.Message, testCase);
+            }
         }
     }
 }

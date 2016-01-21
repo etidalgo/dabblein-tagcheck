@@ -93,6 +93,7 @@ namespace TagCheck
             Tokenizer.ReadWhiteSpace(tr);
             if (tr.Peek() == '/')
             {
+                tr.Read();
                 tagType = TagElementType.End;
                 if (Char.IsLetterOrDigit((Char)tr.Peek())) // tag
                 {
@@ -101,6 +102,7 @@ namespace TagCheck
                 Tokenizer.ReadWhiteSpace(tr);
                 if (tr.Peek() == '>')
                 {
+                    tr.Read(); 
                     tagText = String.Format("</{0}>", tagName);
                     return new TagElement(TagElementType.End, tagName, tagText);
                 }
@@ -125,17 +127,18 @@ namespace TagCheck
             }
 
 
-            if (nextChar == '>')
+            if ((Char)tr.Peek() == '>')
             {
+                tr.Read();
                 tagType = TagElementType.Start;
                 tagText = String.Format("<{0}>", tagName);
             }
             else if (tr.Peek() == '/')
             {
+                Tokenizer.ReadToChar(tr, '>');
                 tagType = TagElementType.Single;
                 tagText = String.Format("<{0}/>", tagName);
             }
-            Tokenizer.ReadToChar(tr, '>');
             
             return new TagElement(tagType, tagName, tagText);
         }
@@ -239,13 +242,21 @@ namespace TagCheck
                             {
                                 if (tags.Count <= 0)
                                 {
-                                    string message = String.Format("Expected end of tags found {0}", tagElement.TagName);
+                                    string message = String.Format("Expected normal text or start tag found closing tag {0}", tagElement.TagName);
                                     return new ParseResult(false, message);
                                 }
                                 else
                                 {
-                                    //TagElement lastTag = tags.Pop();
-                                    //string message = String.Format("Expected {0} found end of text", lastTag.TagName);
+                                    TagElement lastTag = tags.Peek();
+                                    if (!lastTag.TagName.Equals(tagElement.TagName, StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        string message = String.Format("Expected /{0} found {1}", lastTag.TagName, tagElement.TagName);
+                                        return new ParseResult(false, message);
+                                    }
+                                    else
+                                    {
+                                        tags.Pop();
+                                    }
 
                                 }
                                 // verify that end tag corresponds to last open tag
