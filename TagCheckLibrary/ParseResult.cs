@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TagCheck
+namespace TagCheckLibrary
 {
     public class ParseResult
     {
@@ -16,4 +16,22 @@ namespace TagCheck
             Message = message;
         }
     }
+    public class ValidParseResult : ParseResult
+    {
+        public ValidParseResult(string message)
+            :base(true, message)
+        {
+        }
+    }
+    public class InvalidParseResult : ParseResult
+    {
+        public InvalidParseResult(string message)
+            :base(true, message)
+        {
+        }
+    }
+
+
+
+
 }
