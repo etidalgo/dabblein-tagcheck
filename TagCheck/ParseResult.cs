@@ -9,9 +9,11 @@ namespace TagCheck
     public class ParseResult
     {
         public bool IsValid { get; private set; }
-        public ParseResult( bool isValid )
+        public string Message { get; private set; }
+        public ParseResult( bool isValid, string message )
         {
             IsValid = isValid;
+            Message = message;
         }
     }
 }

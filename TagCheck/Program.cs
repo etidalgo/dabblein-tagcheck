@@ -15,6 +15,8 @@ namespace TagCheck
 
             HTMLParser parser = new HTMLParser();
             ParseResult result = parser.Check(text);
+            Console.WriteLine("Result: {0} ", result.IsValid);
+            result = parser.Check(badly);
             Console.WriteLine("Result: {0}", result.IsValid);
         }
     }
