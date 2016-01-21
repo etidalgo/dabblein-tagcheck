@@ -17,6 +17,8 @@ namespace TagCheck
         {
 
             string[] testCases = {
+                    @"<image display src=""blahblahblah"" />",
+                    @"<image src=""blahblahblah"" />",
                     "<html><head></head><body></body></html>", 
                     "<b><i>Some text properly nested</i></b>",
                     "<b><i>Some text <image src=\"blahblahblah\" />properly nested with single tag</i></b>",

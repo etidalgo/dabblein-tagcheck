@@ -69,7 +69,7 @@ namespace TagCheck.Tests
                 yield return new TestCaseData("").Returns(0);
                 yield return new TestCaseData("alpha").Returns(1);
                 yield return new TestCaseData("key=\"value\"").Returns(1);
-                yield return new TestCaseData("alpha key=\"value\" beta").Returns(2);
+                yield return new TestCaseData("alpha key=\"value\" beta").Returns(3);
             }
         }
 
@@ -88,7 +88,10 @@ namespace TagCheck.Tests
         {
             get
             {
-                yield return new TestCaseData("<image src=\"alpha.jpg\" display />", TagElement.TagElementType.Single, "image");
+                yield return new TestCaseData(@"<image />", TagElement.TagElementType.Single, "image");
+                yield return new TestCaseData(@"<image display/>", TagElement.TagElementType.Single, "image");
+                yield return new TestCaseData(@"<image src=""beta.jpg"" />", TagElement.TagElementType.Single, "image");
+                yield return new TestCaseData(@"<image src=""beta.jpg"" display />", TagElement.TagElementType.Single, "image");
                 yield return new TestCaseData("<div>", TagElement.TagElementType.Start, "div");
                 yield return new TestCaseData("<div singleAttribute attrib= \"somthing\">", TagElement.TagElementType.Start, "div");
                 yield return new TestCaseData("</b>", TagElement.TagElementType.End, "b");

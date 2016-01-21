@@ -53,7 +53,7 @@ namespace TagCheckLibrary
 
         public static string ReadQuotedExpression(TextReader tr)
         {
-            Char closingChar = (Char)tr.Peek();
+            Char closingChar = (Char)tr.Read();
             Char previousChar = ' '; // empty
             string expr = "";
             Char thisChar = (Char)tr.Peek();
@@ -63,6 +63,7 @@ namespace TagCheckLibrary
                 expr += (Char)tr.Read();
                 thisChar = (Char)tr.Peek();
             }
+            tr.Read(); // read closing char
             return expr;
         }
         public static string ReadToChar(TextReader tr, Char closingChar)
