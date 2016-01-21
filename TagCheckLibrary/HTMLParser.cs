@@ -53,7 +53,7 @@ namespace TagCheckLibrary
             return new ParseResult(true, "Correctly tagged paragraph");
         }
 
-        private bool ProcessTag(Stack<TagElement> tags, TextReader tr, out string message)
+        public bool ProcessTag(Stack<TagElement> tags, TextReader tr, out string message)
         {
             message = "";
             TagElement tagElement = TagElementParser.ReadTag(tr);

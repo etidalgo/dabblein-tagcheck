@@ -31,14 +31,17 @@ namespace TagCheckLibrary
 
     public class TagElementParser
     {
-        public static void ReadAttributes(TextReader tr)
+        public static int ReadAttributes(TextReader tr)
         {
+            int count = 0;
             TokenUtils.ReadWhiteSpace(tr);
             while (TagElementParser.IsAttributeStart(tr))
             {
                 TagElementParser.ReadAttribute(tr);
                 TokenUtils.ReadWhiteSpace(tr);
+                count++;
             }
+            return count;
         }
 
         public static bool IsAttributeStart(TextReader tr)
@@ -47,22 +50,20 @@ namespace TagCheckLibrary
         }
 
         // \w+=[["]\w+["]]
-        public static void ReadAttribute(TextReader tr)
+        public static bool ReadAttribute(TextReader tr)
         {
             TokenUtils.ReadAlphaNumeric(tr);
             TokenUtils.ReadWhiteSpace(tr);
             if ((Char)tr.Peek() == '/' || (Char)tr.Peek() == '>')
-                return;
+                return true;
             if ((Char)tr.Peek() == '=')
             {
                 tr.Read();
                 TokenUtils.ReadWhiteSpace(tr);
                 TokenUtils.ReadQuotedExpression(tr);
             }
-            else
-            {
-                // error, shouldn't be anything here
-            }
+
+            return true;
         }
 
         public static TagElement ReadTag(TextReader tr)
