@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TagCheck
 {
-    class ParseResult
+    public class ParseResult
     {
         public bool IsValid { get; private set; }
         public ParseResult( bool isValid )
