@@ -59,6 +59,14 @@ namespace TagCheck.Tests
             }
         }
 
+        [Test, TestCaseSource(typeof(TestDataClass), "GeneralTestCases")]
+        public void HandleGeneral(string raw, bool expectedResult)
+        {
+            HTMLParser parser = new HTMLParser();
+
+            ParseResult result = parser.Check(raw);
+            Assert.AreEqual(expectedResult, result.IsValid);
+        }
     }
 
     public class TestDataClass
@@ -96,6 +104,23 @@ namespace TagCheck.Tests
                 yield return new TestCaseData("<div singleAttribute attrib= \"somthing\">", TagElement.TagElementType.Start, "div");
                 yield return new TestCaseData("</b>", TagElement.TagElementType.End, "b");
                 yield return new TestCaseData("</b/>", TagElement.TagElementType.Unknown, "b");
+            }
+        }
+
+        public static IEnumerable GeneralTestCases
+        {
+            get
+            {
+                yield return new TestCaseData(@"<image display src=""blahblahblah"" />", true);
+                yield return new TestCaseData(@"<image src=""blahblahblah"" />", true);
+                yield return new TestCaseData("<html><head></head><body></body></html>", true);
+                yield return new TestCaseData("<b><i>Some text properly nested</i></b>", true);
+                yield return new TestCaseData("<b><i>Some text <image src=\"blahblahblah\" />properly nested with single tag</i></b>", true);
+                yield return new TestCaseData("<b><i>Some text properly nested with single tag</i><image src=\"blahblahblah\" /></b>", true);
+                yield return new TestCaseData("<b><i>Some text badly nested</b></i>", false);
+                yield return new TestCaseData("<b><i>Some text Missing closing</i>", false);
+                yield return new TestCaseData("<i>Some text Missing Opening</b></i>", false);
+                yield return new TestCaseData("<i>Some text Missing Opening</i></b>", false);
             }
         }
     }

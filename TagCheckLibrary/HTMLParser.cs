@@ -35,7 +35,7 @@ namespace TagCheckLibrary
                     {
                         case '<':
                             if (!ProcessTag(tags, tr, out message)) {
-                                return new ParseResult(false, message);
+                                return new InvalidParseResult(message);
                             }
                             break;
                         default:
@@ -50,7 +50,7 @@ namespace TagCheckLibrary
                     return new InvalidParseResult(String.Format("Expected {0} found end of text", unmatched.TagName));
                 }
             }
-            return new ParseResult(true, "Correctly tagged paragraph");
+            return new ValidParseResult("Correctly tagged paragraph");
         }
 
         public bool ProcessTag(Stack<TagElement> tags, TextReader tr, out string message)

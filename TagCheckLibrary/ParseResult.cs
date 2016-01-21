@@ -26,7 +26,7 @@ namespace TagCheckLibrary
     public class InvalidParseResult : ParseResult
     {
         public InvalidParseResult(string message)
-            :base(true, message)
+            :base(false, message)
         {
         }
     }
