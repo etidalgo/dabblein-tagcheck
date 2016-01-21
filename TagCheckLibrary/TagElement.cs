@@ -28,15 +28,20 @@ namespace TagCheckLibrary
             TagText = tagText;
         }
 
+    }
+
+    public class TagElementParser
+    {
         public static void ReadAttributes(TextReader tr)
         {
             TokenUtils.ReadWhiteSpace(tr);
-            while (TagElement.IsAttributeStart(tr))
+            while (TagElementParser.IsAttributeStart(tr))
             {
-                TagElement.ReadAttribute(tr);
+                TagElementParser.ReadAttribute(tr);
                 TokenUtils.ReadWhiteSpace(tr);
             }
         }
+
         public static bool IsAttributeStart(TextReader tr)
         {
             return Char.IsLetterOrDigit((Char)tr.Peek());
@@ -61,34 +66,18 @@ namespace TagCheckLibrary
             }
         }
 
-        public static void ReadToCloseBracket(TextReader tr)
-        {
-            Char penultimateChar;
-            while (Char.IsWhiteSpace((Char)tr.Peek()))
-            {
-                tr.Read();
-            }
-        }
-
         public static TagElement ReadTag(TextReader tr)
         {
-            TagElementType tagType = TagElementType.Unknown;
+            TagElement.TagElementType tagType = TagElement.TagElementType.Unknown;
             string tagName = "";
             string tagText = "";
             tr.Read(); // <
-            try
-            {
 
-            }
-            catch (Exception e)
-            { // catch all, return unknown tag type
-
-            }
             TokenUtils.ReadWhiteSpace(tr);
             if (tr.Peek() == '/')
             {
                 tr.Read();
-                tagType = TagElementType.End;
+                tagType = TagElement.TagElementType.End;
                 if (Char.IsLetterOrDigit((Char)tr.Peek())) // tag
                 {
                     tagName = TokenUtils.ReadAlphaNumeric(tr);
@@ -98,11 +87,11 @@ namespace TagCheckLibrary
                 {
                     tr.Read();
                     tagText = String.Format("</{0}>", tagName);
-                    return new TagElement(TagElementType.End, tagName, tagText);
+                    return new TagElement(TagElement.TagElementType.End, tagName, tagText);
                 }
                 else
                 {
-                    return new TagElement(TagElementType.Unknown, tagName, "");
+                    return new TagElement(TagElement.TagElementType.Unknown, tagName, "");
                 }
             }
 
@@ -114,29 +103,29 @@ namespace TagCheckLibrary
                 tagName = TokenUtils.ReadAlphaNumeric(tr);
                 TokenUtils.ReadWhiteSpace(tr);
 
-                TagElement.ReadAttributes(tr);
+                TagElementParser.ReadAttributes(tr);
                 TokenUtils.ReadWhiteSpace(tr);
             }
             else
             {
-                return new TagElement(TagElementType.Unknown, "", "");
+                return new TagElement(TagElement.TagElementType.Unknown, "", "");
             }
-
 
             if ((Char)tr.Peek() == '>')
             {
                 tr.Read();
-                tagType = TagElementType.Start;
+                tagType = TagElement.TagElementType.Start;
                 tagText = String.Format("<{0}>", tagName);
             }
             else if (tr.Peek() == '/')
             {
                 TokenUtils.ReadToChar(tr, '>');
-                tagType = TagElementType.Single;
+                tagType = TagElement.TagElementType.Single;
                 tagText = String.Format("<{0}/>", tagName);
             }
 
             return new TagElement(tagType, tagName, tagText);
         }
+
     }
 }

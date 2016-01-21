@@ -51,13 +51,12 @@ namespace TagCheckLibrary
                 }
             }
             return new ParseResult(true, "Correctly tagged paragraph");
-
         }
 
         private bool ProcessTag(Stack<TagElement> tags, TextReader tr, out string message)
         {
             message = "";
-            TagElement tagElement = TagElement.ReadTag(tr);
+            TagElement tagElement = TagElementParser.ReadTag(tr);
             if (tagElement.TagType == TagElement.TagElementType.Start)
             {
                 tags.Push(tagElement);
